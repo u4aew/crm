@@ -1,0 +1,17 @@
+use-size(font-size, line-height = null) {
+  if ( font-size == 'inherit' ) {
+    font-size inherit
+    line-height inherit
+  }
+  else {
+    _name = round(no-unit(font-size))
+    fz = lookup('$size-'+ _name)
+    if ( !fz ) {
+      warn('В настройках нет размера — '+ _name +' `'+ selector() +'`')
+    }
+    else {
+      font-size fz
+      line-height lookup('$line-'+ _name + (line-height ? '-'+ no-unit(line-height) : ''))
+    }
+  }
+}

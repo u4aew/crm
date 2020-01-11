@@ -1,0 +1,55 @@
+do() {
+  $type = arguments[0]
+  _type = $type
+  $size = arguments[1]
+  _size = $size
+
+  if ( selector() != '&' ) {
+    warn('do() — ' + selector() + '\n Адаптив должен быть на родительском уровне')
+  }
+
+  if ( typeof(_type) == 'unit' && typeof(_size) != 'unit' ) {
+    $size = _type
+    $type = _size
+  }
+
+  if ( $type == 'min' || $type == 'miw' ) {
+    $type = 'min-width'
+    $size = ($size + 1)
+  } else if ( $type == 'mih' ) {
+    $type = 'min-height'
+    $size = ($size + 1)
+  } else if ( $type == 'mah') {
+    $type = 'max-height'
+  } else if ( $type == 'max' || $type == 'maw' || !$type ) {
+    $type = 'max-width'
+  }
+
+  if ( typeof(_type) == 'unit' && typeof(_size) == 'unit' ) {
+    $min = (min(_type, _size) + 1)
+    $max = max(_type, _size)
+    // if ( $min > 700 && $max <= 1000 ) {
+    @media (min-width: unit($min, 'px')) and (max-width: unit($max, 'px')) {
+      {block}
+    }
+    // } else {
+    //    @media only screen and (min-width: unit($min, 'px')) and (max-width: unit($max, 'px')) {
+    //       {block}
+    //    }
+    // }
+  } else if ( $type == 'portrait' || $type == 'landscape' ) {
+    @media (orientation: unquote($type)) {
+      {block}
+    }
+  } else {
+    // if ( ($type == 'max-width' && $size > 1000) || ($type == 'min-width' && $size <= 1000) ) {
+    @media ({$type}: unit($size, 'px')) {
+      {block}
+    }
+    // } else {
+    //    @media only screen and ({$type}: unit($size, 'px')) {
+    //       {block}
+    //    }
+    // }
+  }
+}

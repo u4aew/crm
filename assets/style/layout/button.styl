@@ -1,0 +1,187 @@
+//.button::-moz-focus-inner {
+//  padding 0
+//  border 0
+//}
+//
+//.button {
+//  use-size(14)
+//  cursor pointer
+//  user-select none
+//  transition $transition-fast
+//  box-sizing border-box
+//  vertical-align top
+//  display inline-block
+//
+//  position relative
+//  padding 0
+//  border 0
+//  border-radius 0
+//  outline none
+//  background none
+//
+//  font-family $font-main
+//  font-style normal
+//  font-weight 500
+//  letter-spacing 0
+//
+//  text-align center
+//  text-transform none
+//  text-decoration none
+//
+//  input {
+//    pointer-events none
+//    opacity 0
+//    position absolute
+//    top 0
+//    left 0
+//  }
+//
+//  &__content {
+//    transition $transition-fast
+//    box-sizing border-box
+//    display flex
+//    align-items center
+//    justify-content center
+//    position relative
+//    padding 0 25px
+//    border-radius 5px
+//    outline none
+//    box-shadow 0 5px 15px rgba($color-primary, 0)
+//    background-color $color-primary
+//    color white
+//
+//  }
+//
+//  &__title {
+//    padding 14px 0 12px 0
+//    display flex
+//    align-items center
+//  }
+//
+//  &__caption {
+//    flex 1 1 100%
+//  }
+//
+//  input:checked ~ &__content {
+//  }
+//
+//  &.is-hover,
+//  &:focus,
+//  &:hover,
+//  .-button-action:hover &.-button-target {
+//    text-decoration none
+//
+//    .button__content {
+//      color $color-1
+//      background-color $color-primary
+//      box-shadow 0 5px 15px rgba($color-primary, 0.25)
+//    }
+//
+//    .button__icon {
+//      &::before {
+//        transition-delay 0s
+//        opacity 1
+//      }
+//
+//      &::after {
+//        transition-delay .025s
+//        opacity 0
+//      }
+//    }
+//  }
+//
+//  &.is-active,
+//  &:active,
+//  .-button-action:active &.-button-target {
+//    text-decoration none
+//
+//    .button__content {
+//      color $color-1
+//      background-color $color-primary-dark
+//    }
+//
+//    .button__icon {
+//      &::before {
+//        transition-delay 0s
+//        opacity 1
+//      }
+//
+//      &::after {
+//        transition-delay .025s
+//        opacity 0
+//      }
+//    }
+//  }
+//
+//  &.is-disabled,
+//  &:disabled {
+//    pointer-events none
+//    border 0 !important
+//    background none !important
+//    text-decoration none !important
+//
+//    .button__content {
+//      color $color-1 !important
+//      border-color transparent !important
+//      box-shadow none !important
+//      background-image none !important
+//      opacity 0.5 !important
+//      background-color $color-7-600 !important
+//    }
+//  }
+//}
+//
+//.button.is-full {
+//  width 100%
+//}
+//
+//.button.is-loading {
+//  position relative
+//  pointer-events none
+//
+//  &:before {
+//    content ''
+//    display block
+//    position absolute
+//    top 50%
+//    left 50%
+//    transform translate(-50%, -50%)
+//    z-index 15
+//  }
+//
+//  .button {
+//    &__title {
+//      visibility hidden
+//    }
+//  }
+//}
+//
+//.button.button_outline {
+//  .button {
+//    &__content {
+//      background-color $color-1
+//      border 1px solid $color-primary
+//      color $color-primary
+//    }
+//  }
+//
+//  &.is-hover,
+//  &:hover {
+//    .button__content {
+//      border-color $color-1
+//      color $color-1
+//      background-color $color-primary
+//    }
+//  }
+//
+//  &.is-active,
+//  &:active {
+//    .button__content {
+//      border-color $color-1
+//      color $color-1
+//      background-color $color-primary
+//      opacity 0.8
+//      transform translateY(3px)
+//    }
+//  }
+//}

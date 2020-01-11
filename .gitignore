@@ -1,0 +1,21 @@
+# dependencies
+node_modules
+api/node_modules
+
+# logs
+npm-debug.log
+
+# coverage
+coverage
+
+# Env
+.env
+
+# idea
+.idea
+
+# Nuxt build
+.nuxt
+
+# Nuxt generate
+dist

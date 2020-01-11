@@ -1,0 +1,11 @@
+define-size-line(font-size, line-height) {
+  define-size(font-size)
+  define-line(font-size, line-height)
+}
+define-size(font-size) {
+  define('$size-'+ round(no-unit(font-size)), unit(font-size, 'px'), true)
+}
+define-line(font-size, line-height) {
+  _name = round(no-unit(font-size))
+  define('$line-'+ _name +( lookup('$line-'+ _name) ? '-'+ line-height :  ''), (no-unit(line-height[0])/no-unit(font-size)), true)
+}
