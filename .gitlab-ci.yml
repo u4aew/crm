@@ -1,8 +1,0 @@
-stages:
-  - deploy
-
-deploy-job:
-  tags:
-    - site
-  stage: deploy
-  script: rm -f app.zip && zip -r app.zip * && cp app.zip /var/www/html/app && cd /var/www/html/app && unzip -o app.zip && npm install && npm run-script site:test && npm run-script site:build && cd /var/www && pm2 start
