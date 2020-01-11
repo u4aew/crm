@@ -3,34 +3,19 @@ const ImageHelper = require('@api/utils/image-helper');
 
 // models
 const ImagesModel = require('@api/models/content/images-model');
-const BaseInfosModel = require('@api/models/content/base-infos-model');
 const CategoriesModel = require('@api/models/shop/categories-model');
 
 
 const getCategoriesInfo = async (categories) => {
   let result = [];
-  for (const { id, parent_id, basic_info_id} of categories) {
-    const baseInfo = await BaseInfosModel.getById(basic_info_id);
-    if (Helper.isDefined(baseInfo)) {
-      const { title, description, slug, image_id } = baseInfo;
-
-      let image = {
-        title: null
-      };
-
-      if (Helper.isDefined(image_id)) {
-        image = await ImagesModel.getById(image_id);
-      }
-
-      result.push({
-        id,
-        title,
-        image: image.title,
-        slug,
-        parent_id,
-        description
-      });
+  for (const category of categories) {
+    let image = {
+      title: null
+    };
+    if (Helper.isDefined(category.image_id)) {
+      image = await ImagesModel.getById(category.image_id);
     }
+    result.push({title:category.title, id: category.id})
   }
   return result
 };
@@ -48,17 +33,15 @@ exports.getAll = async (req, res) => {
 
 // Создать категорию
 exports.create = async (req, res) => {
-  const { parent_id = null, image_base_64 = null } = req.body.data;
+  const { image_base_64 = null } = req.body.data;
   let image = {
     id: null
   };
-
   try {
     if (Helper.isDefined(image_base_64) && Helper.isNotEmpty(image_base_64)) {
       image = await ImagesModel.create(image_base_64);
     }
-    const { id } = await BaseInfosModel.create({...req.body.data, ...{image_id: image.id}});
-    const result = await CategoriesModel.create(id, parent_id);
+    const result = await CategoriesModel.create({...req.body.data, ...{image_id:image.id}});
     res.json({result});
   } catch (e) {
     res.status(400).send(e)
@@ -70,14 +53,8 @@ exports.deleteById = async (req, res) => {
   try {
     const {id} = req.body.data;
     const {basic_info_id} = await CategoriesModel.getById(id);
-    const baseInfo = await BaseInfosModel.getById(basic_info_id);
 
     await CategoriesModel.deleteById(id);
-    await BaseInfosModel.deleteById(basic_info_id);
-
-    if (Helper.isDefined(baseInfo.image_id)) {
-      await ImagesModel.deleteById(baseInfo.image_id)
-    }
 
     res.json({result: 'success'})
   } catch (e) {

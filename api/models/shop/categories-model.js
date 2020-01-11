@@ -8,7 +8,19 @@ const categories = DB.define('categories', {
     primaryKey: true,
     allowNull: false
   },
-  basic_info_id: {
+  slug: {
+    type: Sequelize.INTEGER,
+    allowNull: true
+  },
+  title: {
+    type: Sequelize.INTEGER,
+    allowNull: true
+  },
+  image_id: {
+    type: Sequelize.INTEGER,
+    allowNull: true
+  },
+  description: {
     type: Sequelize.INTEGER,
     allowNull: true
   },
@@ -20,12 +32,15 @@ const categories = DB.define('categories', {
 
 
 class CategoriesModel {
-  static create (basic_info_id, parent_id) {
+  static create ({title, description, image_id, slug, parent_id}) {
     return new Promise((resolve, reject) => {
       categories
         .create({
-          basic_info_id,
-          parent_id
+          slug,
+          title,
+          image_id,
+          parent_id,
+          description
       })
         .then(res => resolve(res))
         .catch(err => reject(err));
@@ -39,9 +54,9 @@ class CategoriesModel {
         .catch((e) => reject(e))
     })
   }
-  static updateById ({id, title, description, slug, image, parent_id}) {
+  static updateById ({id, title, description, slug, image_id, parent_id}) {
     return new Promise((resolve, reject) => {
-      categories.update({ title, description, slug, image, parent_id }, {
+      categories.update({ title, description, slug, image_id, parent_id }, {
         where: {
           id
         }
