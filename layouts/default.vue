@@ -56,13 +56,7 @@
     <v-content>
       <nuxt/>
     </v-content>
-    <v-footer
-      color="indigo"
-      app
-    >
-      <span class="white--text">&copy; 2020</span>
-      <notifications position="bottom center" group="app" />
-    </v-footer>
+    <notifications position="bottom center" group="app" />
   </v-app>
 </template>
 

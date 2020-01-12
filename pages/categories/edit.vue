@@ -80,6 +80,32 @@
 <script>
     import CategoryController from '@/pages/categories/controllers/category-controller'
     export default {
-        mixins: [CategoryController]
+        mixins: [CategoryController],
+        data () {
+            return {
+                result: null
+            }
+        },
+        methods: {
+            sendData() {
+                return this.$axios
+                    .$post(`${process.env.API_URL}/shop/categories/update/`, { data: this.formData })
+            },
+        },
+        async beforeMount () {
+            const categoryId = this.$route.query.id;
+            try {
+                const { result } = await this.$axios
+                    .$get(`${process.env.API_URL}/shop/categories/info`, { params: { id:categoryId }});
+                const {title, description, slug, parent_id, id} = result;
+                this.id = id;
+                this.slug = slug;
+                this.title = title;
+                this.parent_id = parent_id;
+                this.description = description;
+            } catch (e) {
+              console.log(e);
+            }
+        }
     }
 </script>

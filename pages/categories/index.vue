@@ -13,11 +13,13 @@
           class="elevation-1"
         >
           <template v-slot:item.action="{ item }">
+            <nuxt-link :to="`/categories/edit?id=${item.id}`">
             <v-icon
               small
               class="mr-2">
               mdi-table-edit
             </v-icon>
+            </nuxt-link>
             <v-icon
               small
               @click="deleteItem(item)">

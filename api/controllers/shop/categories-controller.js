@@ -31,6 +31,18 @@ exports.getAll = async (req, res) => {
   }
 };
 
+
+// Получить категорию по id
+exports.getById = async (req, res) => {
+  let {id} = req.query;
+  try {
+    const category = await CategoriesModel.getById(id);
+    res.json({result:category})
+  } catch (e) {
+    res.status(400).send(e)
+  }
+};
+
 // Создать категорию
 exports.create = async (req, res) => {
   const { image_base_64 = null } = req.body.data;
@@ -52,10 +64,11 @@ exports.create = async (req, res) => {
 exports.deleteById = async (req, res) => {
   try {
     const {id} = req.body.data;
-    const {basic_info_id} = await CategoriesModel.getById(id);
-
+    const {image_id} = await CategoriesModel.getById(id);
     await CategoriesModel.deleteById(id);
-
+    if (Helper.isDefined(image_id)) {
+      await ImagesModel.deleteById(image_id);
+    }
     res.json({result: 'success'})
   } catch (e) {
     res.status(400).send(e);
@@ -64,29 +77,6 @@ exports.deleteById = async (req, res) => {
 
 // Обновить категорию
 exports.updateById = async (req, res) => {
-  const {id, image_base_64 = null, image = null} = req.body.data;
-  const currentImageCategory = await CategoriesModel.getImageCategoryById(id);
-
-  if (Helper.isDefined(image_base_64) && Helper.isNotEmpty(image_base_64)) {
-    try {
-      req.body.data.image = ImageHelper.saveBase64(image_base_64);
-      ImageHelper.removeImage(currentImageCategory);
-    } catch (e) {
-      res.status(400).send(e);
-      return
-    }
-  }
-
-  if (!Helper.isDefined(image_base_64) && !Helper.isDefined(image)) {
-    try {
-      ImageHelper.removeImage(currentImageCategory);
-      req.body.data.image = null
-    } catch (e) {
-      res.status(400).send(e);
-      return
-    }
-  }
-
   CategoriesModel.updateById(req.body.data)
     .then(data => res.json({result: data}))
     .catch(e => res.status(400).send(e))

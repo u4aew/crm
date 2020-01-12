@@ -6,6 +6,7 @@ const BrandsController = require('@api/controllers/shop/brands-controller');
 
 // categories
 router.get('/categories/', CategoriesController.getAll);
+router.get('/categories/info', CategoriesController.getById);
 router.post('/categories/create', CategoriesController.create);
 router.post('/categories/delete', CategoriesController.deleteById);
 router.post('/categories/update', CategoriesController.updateById);

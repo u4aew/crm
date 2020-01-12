@@ -47,9 +47,12 @@ class imagesModel {
   }
 
   static async deleteById (id) {
-
+    console.log('test 1')
     const image = await this.getById(id);
+    console.log('test 2')
     ImageHelper.removeImage(image.title);
+
+    console.log('test 3')
 
     return new Promise((resolve, reject) => {
       images.destroy({
@@ -57,8 +60,14 @@ class imagesModel {
           id
         }
       })
-        .then((res) => resolve(res))
-        .catch((e)=> reject(e));
+        .then((res) => {
+          console.log(res);
+          resolve(res)
+        })
+        .catch((e)=> {
+          console.log(e);
+          reject(e)
+        });
     });
   }
 }
