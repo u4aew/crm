@@ -1,10 +1,8 @@
 const Helper = require('@api/utils/helper-node');
-const ImageHelper = require('@api/utils/image-helper');
 
 // models
 const ImagesModel = require('@api/models/content/images-model');
 const CategoriesModel = require('@api/models/shop/categories-model');
-
 
 const getCategoriesInfo = async (categories) => {
   let result = [];
@@ -30,7 +28,6 @@ exports.getAll = async (req, res) => {
     res.status(400).send(e)
   }
 };
-
 
 // Получить категорию по id
 exports.getById = async (req, res) => {
@@ -77,7 +74,26 @@ exports.deleteById = async (req, res) => {
 
 // Обновить категорию
 exports.updateById = async (req, res) => {
+  const { image_base_64 = null, remove_old_image = false, id } = req.body.data;
+
+  if (remove_old_image) {
+    req.body.data.image_id = null
+  }
+
+  if (Helper.isDefined(image_base_64) && Helper.isNotEmpty(image_base_64)) {
+   const image = await ImagesModel.create(image_base_64);
+   req.body.data.image_id = image.id
+  }
+
+  const {image_id} = await CategoriesModel.getById(id);
   CategoriesModel.updateById(req.body.data)
-    .then(data => res.json({result: data}))
+    .then(async data => {
+      if (remove_old_image) {
+        if (Helper.isDefined(image_id)) {
+          await ImagesModel.deleteById(image_id);
+        }
+      }
+      res.json({result: data})
+    })
     .catch(e => res.status(400).send(e))
 };

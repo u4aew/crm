@@ -15,6 +15,7 @@ export default {
     parent_id: null,
     image_base_64: null,
     id: null,
+    remove_old_image: false,
     categories: [{
       title: 'Не выбрано', value: null
     }]
@@ -27,7 +28,8 @@ export default {
         title: this.title,
         parent_id: this.parent_id,
         description: this.description,
-        image_base_64: this.image_base_64
+        image_base_64: this.image_base_64,
+        remove_old_image: this.remove_old_image
       }
     },
     titleErrors () {
@@ -49,6 +51,7 @@ export default {
         .$post(`${process.env.API_URL}/shop/categories/create/`, { data: this.formData })
     },
     onFileChange(file) {
+      this.remove_old_image = true;
       if (Helper.isDefined(file)) {
         reader.readAsDataURL(file);
         reader.onloadend = () => {

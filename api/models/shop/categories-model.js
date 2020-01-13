@@ -54,14 +54,14 @@ class CategoriesModel {
         .catch((e) => reject(e))
     })
   }
-  static updateById ({id, title, description, slug, parent_id}) {
+  static updateById ({id, title, description, slug, parent_id, image_id}) {
     return new Promise((resolve, reject) => {
-      categories.update({ title, description, slug, parent_id }, {
+      categories.update({ title, description, slug, parent_id, image_id }, {
         where: {
           id
         }
       })
-        .then(() => resolve({id, title, description, slug, parent_id}))
+        .then(() => resolve({id, title, description, slug, parent_id, image_id}))
         .catch((e)=> {reject(e)})
     })
   }
