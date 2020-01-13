@@ -1,23 +1,17 @@
 <template>
-    <div class="block">
-        <div class="block-wrapper">
-            <Intro/>
-        </div>
-    </div>
+  <v-container fluid>
+    <v-row>
+      <v-col cols="12" sm="12" md="12">
+        <div class="title">Домашняя страница</div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-    import Intro from '~/components/intro/Intro'
-
     export default {
         head: {
             title: 'Домашнаяя страница'
-        },
-        components: {
-            Intro
-        },
-        data(context) {
-            return {name: 'World'}
         }
     }
 </script>

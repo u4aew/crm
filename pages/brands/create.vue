@@ -4,35 +4,18 @@
       <v-col>
         <v-tabs class="pa-2">
           <v-tab>Базовая информация</v-tab>
-          <v-tab>Свойства категории</v-tab>
           <v-tab>SEO</v-tab>
           <v-tab-item>
             <v-container>
               <v-row>
                 <v-col cols="6">
                   <form>
-                    <template v-if="image_id">
-                      <v-row align="center">
-                        <v-col cols="8">
-                          <v-text-field
-                            v-model="image_id"
-                            label="ID Изображения"
-                            disabled
-                          />
-                        </v-col>
-                        <v-col cols="4">
-                          <v-btn block color="primary" @click="removeImg" dark class="ma-1">Удалить</v-btn>
-                        </v-col>
-                      </v-row>
-                    </template>
-                    <template v-else>
-                      <v-file-input
-                        label="Обложка"
-                        accept="image/png, image/jpeg, image/bmp"
-                        placeholder="Выберите изображение"
-                        @change="onFileChange"
-                      />
-                    </template>
+                    <v-file-input
+                      label="Обложка"
+                      accept="image/png, image/jpeg, image/bmp"
+                      placeholder="Выберите изображение"
+                      @change="onFileChange"
+                    />
                     <v-text-field
                       v-model="title"
                       :error-messages="titleErrors"
@@ -61,23 +44,6 @@
           </v-tab-item>
           <v-tab-item>
             <v-container>
-              <v-row>
-                <v-col cols="6">
-                  <form>
-                    <v-select
-                      v-model="parent_id"
-                      :items="categories"
-                      item-text="title"
-                      item-value="id"
-                      label="Родитель"
-                    />
-                  </form>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-tab-item>
-          <v-tab-item>
-            <v-container>
               seo штучки
             </v-container>
           </v-tab-item>
@@ -94,8 +60,8 @@
 </template>
 
 <script>
-    import CategoryEditController from '@/pages/categories/controllers/category-edit-controller'
+    import BrandController from '@/pages/brands/controllers/brand-controller'
     export default {
-        mixins: [CategoryEditController]
+        mixins: [BrandController]
     }
 </script>

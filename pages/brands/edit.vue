@@ -94,8 +94,8 @@
 </template>
 
 <script>
-    import CategoryEditController from '@/pages/categories/controllers/category-edit-controller'
+    import BrandEditController from '@/pages/brands/controllers/brand-edit-controller'
     export default {
-        mixins: [CategoryEditController]
+        mixins: [BrandEditController]
     }
 </script>

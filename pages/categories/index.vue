@@ -10,8 +10,7 @@
         <v-data-table
           :headers="headers"
           :items="items"
-          class="elevation-1"
-        >
+          class="elevation-1">
           <template v-slot:item.action="{ item }">
             <nuxt-link :to="`/categories/edit?id=${item.id}`">
             <v-icon
