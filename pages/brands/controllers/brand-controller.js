@@ -11,18 +11,14 @@ export default {
     slug: { required}
   },
   data: () => ({
-    messageSuccess: 'Добавлена новая категория',
+    messageSuccess: 'Добавлен новый бренд',
     messageError: 'Ошибка',
+    id: null,
+    slug: null,
     title: null,
     description: null,
-    slug: null,
-    parent_id: null,
     image_base_64: null,
-    id: null,
-    remove_old_image: false,
-    categories: [{
-      title: 'Не выбрано', value: null
-    }]
+    remove_old_image: false
   }),
   computed: {
     formData () {
@@ -30,7 +26,6 @@ export default {
         id: this.id,
         slug: this.slug,
         title: this.title,
-        parent_id: this.parent_id,
         description: this.description,
         image_base_64: this.image_base_64,
         remove_old_image: this.remove_old_image
@@ -50,10 +45,6 @@ export default {
     }
   },
   methods: {
-    sendData() {
-      return this.$axios
-        .$post(`${process.env.API_URL}/shop/categories/create/`, { data: this.formData })
-    },
     onFileChange(file) {
       this.remove_old_image = true;
       if (Helper.isDefined(file)) {
@@ -64,6 +55,10 @@ export default {
       } else {
         this.image_base_64 = null
       }
+    },
+    sendData() {
+      return this.$axios
+        .$post(`${process.env.API_URL}/shop/brands/create/`, { data: this.formData })
     },
     submit () {
       this.$v.$touch();
@@ -78,7 +73,7 @@ export default {
       if (!existErrors) {
           this.sendData()
           .then(() => {
-            this.$router.replace({ path: '/categories' });
+            this.$router.replace({ path: '/brands' });
             this.$notify({
               type: 'success',
               group: 'app',
@@ -93,20 +88,6 @@ export default {
             })
           })
       }
-    }
-  },
-  async beforeMount () {
-    try {
-      const { result } = await this.$axios.$get(`${process.env.API_URL}/shop/categories/`);
-      result.forEach((item) => {
-        this.categories.push(item)
-      })
-    } catch (e) {
-      this.$notify({
-        type: 'error',
-        group: 'app',
-        title: this.messageError
-      })
     }
   }
 }

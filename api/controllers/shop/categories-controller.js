@@ -24,7 +24,7 @@ exports.getAll = async (req, res) => {
   try {
     const categoriesAll = await CategoriesModel.getAll();
     const result = await getCategoriesInfo(categoriesAll);
-    Logger.info(`Success get categories: [result = '${result}']`);
+    Logger.info(`Success get categories: [result = '${JSON.stringify(result)}']`);
     res.json({result})
   } catch (e) {
     Logger.error(`Error get categories: [error = '${JSON.stringify(e)}']`);
@@ -38,7 +38,7 @@ exports.getById = async (req, res) => {
   const {id} = req.query;
   try {
     const category = await CategoriesModel.getById(id);
-    Logger.info(`Success get category by id: [result = '${JSON.category(category)}']`);
+    Logger.info(`Success get category by id: [result = '${JSON.stringify(category)}']`);
     res.json({result:category})
   } catch (e) {
     Logger.error(`Error get category by id: [error = '${JSON.stringify(e)}']`);
@@ -79,6 +79,7 @@ exports.deleteById = async (req, res) => {
     Logger.info(`Success delete category by id`);
     res.json({result: 'success'})
   } catch (e) {
+    Logger.info(`Error delete category by id: [error = '${e}']`);
     res.status(400).send(e);
   }
 };
@@ -105,11 +106,11 @@ exports.updateById = async (req, res) => {
           await ImagesModel.deleteById(image_id);
         }
       }
-      Logger.info(`Success update category by id: [result = ${data}]`);
+      Logger.info(`Success update category by id: [result = ${JSON.stringify(data)}]`);
       res.json({result: data})
     })
     .catch(e => {
-      Logger.info(`Error update category by id: [result = ${JSON.stringify(e)}]`);
+      Logger.info(`Error update category by id: [error = ${JSON.stringify(e)}]`);
       res.status(400).send(e)
     })
 };

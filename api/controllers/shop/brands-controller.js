@@ -1,12 +1,13 @@
 const Helper = require('@api/utils/helper-node');
 const Logger = require('@api/logger/logger');
 
-
+// models
+const ImagesModel = require('@api/models/content/images-model');
 const BrandsModel = require('@api/models/shop/brands-model');
 
 // Получить все бренды
 exports.getAll = (req, res) => {
-  Logger.info(`   Get brands`);
+  Logger.info(`Get brands`);
   BrandsModel.getAll()
     .then(data => {
       Logger.info(`Success get brands: [data = '${JSON.stringify(data)}']`);
@@ -19,45 +20,42 @@ exports.getAll = (req, res) => {
 };
 
 // Создать бренд
-exports.create = (req, res) => {
-  Logger.info(`   Create brand: [data = ${JSON.stringify(req.body.data)}]`);
-  let bodyData = req.body.data;
-  let {title, slug, image_base_64 = null, description = null, image = null} = bodyData;
-
-  // Сохраняем изображение, если передали
-  if (Helper.isDefined(image_base_64)) {
-    image = ImageHelper.saveBase64(image_base_64)
+exports.create = async (req, res) => {
+  Logger.info(`Create brand: [data = '${JSON.stringify(req.body.data)}']`);
+  const { image_base_64 = null } = req.body.data;
+  let image = {
+    id: null
+  };
+  try {
+    if (Helper.isDefined(image_base_64) && Helper.isNotEmpty(image_base_64)) {
+      image = await ImagesModel.create(image_base_64);
+    }
+    const result = await BrandsModel.create({...req.body.data, ...{image_id:image.id}});
+    Logger.info(`Success create brand: [result = '${JSON.stringify(result)}']`);
+    res.json({result});
+  } catch (e) {
+    Logger.error(`Error create brand: [error = '${JSON.stringify(e)}']`);
+    res.status(400).send(e)
   }
-
-  BrandsModel.create({
-    slug,
-    title,
-    image,
-    description,
-  })
-    .then(data => {
-      Logger.info(`Success create brand`);
-      res.json({result:data})
-    })
-    .catch(e => {
-      Logger.info(`Error create brand: [error = ${e}]`);
-      res.status(400).send(e)
-    })
 };
 
 
 // Удалить бренд
-exports.deleteById = (req, res) => {
-  Logger.info(`    Remove brand: [id = ${req.body.data.id}]`);
-  BrandsModel.deleteById(req.body.data.id)
-    .then(() => {
-      Logger.info(`Success remove brand`);
-      res.json({result: 'success'})
-    })
-    .catch((e)=> {
-      Logger.error(`Error remove brand: [e = '${e}']`);
-      res.status(400).send(e)
-    })
+exports.deleteById = async (req, res) => {
+  try {
+    Logger.info(`Delete brand by id: [data = '${JSON.stringify(req.body.data)}']`);
+    const {id} = req.body.data;
+    const {image_id} = await BrandsModel.getById(id);
+    await BrandsModel.deleteById(id);
+    if (Helper.isDefined(image_id)) {
+      await ImagesModel.deleteById(image_id);
+    }
+    Logger.info(`Success delete brand by id`);
+    res.json({result: 'success'})
+  } catch (e) {
+    Logger.error(`Error create category: [error = '${JSON.stringify(e)}']`);
+    res.status(400).send(e);
+  }
 };
 
 
@@ -92,11 +90,11 @@ exports.updateById = async (req, res) => {
 
   BrandsModel.updateById(req.body.data)
     .then(data => {
-      Logger.info('Success update brand');
+      Logger.info(`Success update brand: [result = '${data}']`);
       res.json({result: data})
     })
     .catch(e => {
-      Logger.error(`Error update brand: [error = '${e}']`);
+      Logger.error(`Error update brand: [error = '${JSON.stringify(e)}']`);
       res.status(400).send(e)
     })
 };

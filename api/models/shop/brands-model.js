@@ -20,8 +20,8 @@ const brands = DB.define('brands', {
     type: Sequelize.STRING,
     allowNull: true
   },
-  image: {
-    type: Sequelize.STRING,
+  image_id: {
+    type: Sequelize.INTEGER,
     allowNull: true
   }
 });
@@ -35,19 +35,28 @@ class BrandsModel {
     })
   }
 
-  static create ({title, description, slug, image}) {
+  static create ({title, description, slug, image_id}) {
     return new Promise((resolve, reject) => {
       brands
         .create({
           slug,
           title,
-          image,
+          image_id,
           description
         })
         .then(res => resolve(res))
         .catch(err => reject(err));
     });
   }
+
+  static getById (id) {
+    return new Promise((resolve, reject) => {
+      brands.findOne({where: {id}, raw:true})
+        .then((data) => resolve(data))
+        .catch((e)=> reject(e));
+    });
+  }
+
   static updateById ({id, title, description, slug, image}) {
     return new Promise((resolve, reject) => {
       brands.update({ title, description, slug, image }, {
